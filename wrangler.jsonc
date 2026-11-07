@@ -23,9 +23,9 @@
     "TURNSTILE_SITE_KEY": "0x4AAAAAAF4ELW4xtEFmTRxU",
     // Cloudflare Access (Zero Trust) settings for /admin. Safe to commit.
     // Team domain looks like https://<team>.cloudflareaccess.com
-    "ACCESS_TEAM_DOMAIN": "REPLACE_WITH_ACCESS_TEAM_DOMAIN",
+    "ACCESS_TEAM_DOMAIN": "https://black-wind-e97c.cloudflareaccess.com",
     // "Application Audience (AUD) Tag" from the Access application.
-    "ACCESS_AUD": "REPLACE_WITH_ACCESS_AUD"
+    "ACCESS_AUD": "2cf73ba73e00240488d8285cfd155935c050238048b53e38a43e1b9c646fca08"
   }
   // Secrets (set with `npx wrangler secret put NAME`, never commit):
   //   TURNSTILE_SECRET     Turnstile secret key
