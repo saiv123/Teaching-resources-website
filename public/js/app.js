@@ -55,7 +55,18 @@ async function init() {
   wireFilters();
   wireSuggestForm();
   wireReportForm();
+  clearForms();
+  // Browsers can refill form fields on refresh or when coming back with the
+  // Back button; start every visit with empty forms.
+  window.addEventListener("pageshow", clearForms);
   render();
+}
+
+function clearForms() {
+  for (const form of [els.suggestForm, els.reportForm]) {
+    if (form._clear) form._clear();
+    else form.reset();
+  }
 }
 
 // ---------- filters ----------
