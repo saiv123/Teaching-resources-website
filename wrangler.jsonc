@@ -15,7 +15,7 @@
       "binding": "DB",
       "database_name": "teaching-resources",
       // From `npx wrangler d1 create teaching-resources`
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+      "database_id": "611cc9a2-89d4-4c7d-8b88-6e6f13f0d015"
     }
   ],
   "vars": {
