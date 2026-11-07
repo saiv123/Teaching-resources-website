@@ -180,7 +180,7 @@ function renderEntry(r) {
 
   const desc = document.createElement("p");
   desc.className = "description";
-  desc.textContent = r.description;
+  desc.innerHTML = formatCitation(r.description);
 
   const citation = document.createElement("p");
   citation.className = "citation";

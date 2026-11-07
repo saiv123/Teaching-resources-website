@@ -4,6 +4,8 @@
   "name": "teaching-resources",
   "main": "src/worker.js",
   "compatibility_date": "2025-09-01",
+  // Only serve on the custom domain (resources.sailabs.uk), not *.workers.dev
+  "workers_dev": false,
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
