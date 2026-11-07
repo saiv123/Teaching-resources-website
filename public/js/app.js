@@ -321,15 +321,14 @@ function wireSuggestForm() {
   f.sectionSelect.addEventListener("change", () => toggleOther(f.sectionSelect, f.sectionOther));
   const updatePreview = wireCitationPreview(f.citation, form.querySelector(".citation-preview"));
 
-  $("suggest-btn").addEventListener("click", () => {
-    if (form.dataset.done) {
-      form.reset();
-      refreshSections();
-      updatePreview();
-      delete form.dataset.done;
-    }
-    openDialog(els.suggestDialog, form);
-  });
+  // Empties every field (after a successful send). Cancel keeps the draft.
+  form._clear = () => {
+    form.reset();
+    refreshSections();
+    updatePreview();
+  };
+
+  $("suggest-btn").addEventListener("click", () => openDialog(els.suggestDialog, form));
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -373,6 +372,11 @@ function wireReportForm() {
   f.sectionSelect.addEventListener("change", () => toggleOther(f.sectionSelect, f.sectionOther));
   form._refreshSections = refreshSections;
   form._updatePreview = wireCitationPreview(f.citation, form.querySelector(".citation-preview"));
+  form._clear = () => {
+    form.reset();
+    showReasonFields(form);
+    form._updatePreview();
+  };
 
   f.reason.addEventListener("change", () => showReasonFields(form));
 
@@ -487,8 +491,10 @@ async function send(form, kind, fields) {
     const out = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(out.error || "Something went wrong.");
 
+    // Clear the fields right away so nothing lingers after a successful send.
+    if (form._clear) form._clear();
+    else form.reset();
     setStatus(form, "Thanks! Your submission was sent for review.", "success");
-    form.dataset.done = "1";
     setTimeout(() => form.closest("dialog").close(), 1800);
   } catch (err) {
     setStatus(form, err.message, "error");
