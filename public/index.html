@@ -34,7 +34,13 @@
         </label>
         <button type="button" class="btn btn-ghost" id="clear-filters">Clear</button>
       </div>
-      <p id="result-count" class="result-count" aria-live="polite"></p>
+      <div class="results-bar">
+        <p id="result-count" class="result-count" aria-live="polite"></p>
+        <div class="collapse-controls">
+          <button type="button" class="btn btn-small btn-ghost" id="expand-all">Expand all</button>
+          <button type="button" class="btn btn-small btn-ghost" id="collapse-all">Collapse all</button>
+        </div>
+      </div>
     </section>
 
     <div id="results"><p class="empty">Loading resources…</p></div>

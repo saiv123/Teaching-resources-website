@@ -8,6 +8,7 @@ const state = {
   siteKey: "",
   widgets: new Map(), // form id -> Turnstile widget id
   reporting: null,    // resource being reported
+  collapsed: loadCollapsed(), // type ids the visitor has collapsed
 };
 
 const $ = (id) => document.getElementById(id);
@@ -16,6 +17,8 @@ const els = {
   type: $("filter-type"),
   section: $("filter-section"),
   clear: $("clear-filters"),
+  expandAll: $("expand-all"),
+  collapseAll: $("collapse-all"),
   count: $("result-count"),
   results: $("results"),
   suggestDialog: $("suggest-dialog"),
@@ -68,7 +71,10 @@ function readUrlState() {
   const p = new URLSearchParams(location.search);
   els.search.value = p.get("q") || "";
   const type = p.get("type");
-  if (type && state.typeLabel[type]) els.type.value = type;
+  if (type && state.typeLabel[type]) {
+    els.type.value = type;
+    openType(type);
+  }
   refreshSectionFilter(p.get("section"));
 }
 
@@ -88,16 +94,56 @@ function wireFilters() {
     timer = setTimeout(render, 120);
   });
   els.type.addEventListener("change", () => {
+    openType(els.type.value);
     refreshSectionFilter(els.section.value);
     render();
   });
-  els.section.addEventListener("change", render);
+  els.section.addEventListener("change", () => {
+    // Open every type that contains the chosen section.
+    for (const r of state.resources) if (r.section === els.section.value) openType(r.type);
+    render();
+  });
   els.clear.addEventListener("click", () => {
     els.search.value = "";
     els.type.value = "";
     refreshSectionFilter("");
     render();
   });
+  els.expandAll.addEventListener("click", () => setAllCollapsed(false));
+  els.collapseAll.addEventListener("click", () => setAllCollapsed(true));
+}
+
+// ---------- collapsible types ----------
+
+const COLLAPSED_KEY = "collapsedTypes";
+
+function loadCollapsed() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(COLLAPSED_KEY) || "[]"));
+  } catch {
+    return new Set();
+  }
+}
+
+function saveCollapsed() {
+  try {
+    localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...state.collapsed]));
+  } catch {
+    // Storage unavailable (private mode etc.): collapsing still works for this visit.
+  }
+}
+
+function setAllCollapsed(collapse) {
+  state.collapsed = collapse ? new Set(state.types.map((t) => t.id)) : new Set();
+  saveCollapsed();
+  for (const block of els.results.querySelectorAll("details.type-group")) {
+    block.open = !collapse;
+  }
+}
+
+// Picking a type (dropdown or chip) always opens that type.
+function openType(typeId) {
+  if (typeId && state.collapsed.delete(typeId)) saveCollapsed();
 }
 
 function matches(r, q, type, section) {
@@ -137,15 +183,29 @@ function render() {
   }
 
   // Group by type (in the fixed type order), then by section.
+  // Each type is a collapsible <details>; its open/closed state survives re-renders.
   for (const t of state.types) {
     const ofType = list.filter((r) => r.type === t.id);
     if (!ofType.length) continue;
 
-    const typeBlock = document.createElement("section");
+    const typeBlock = document.createElement("details");
     typeBlock.className = "type-group";
+    typeBlock.dataset.type = t.id;
+    typeBlock.open = !state.collapsed.has(t.id);
+    typeBlock.addEventListener("toggle", () => {
+      if (typeBlock.open) state.collapsed.delete(t.id);
+      else state.collapsed.add(t.id);
+      saveCollapsed();
+    });
+
+    const summary = document.createElement("summary");
     const h2 = document.createElement("h2");
     h2.textContent = t.label;
-    typeBlock.append(h2);
+    const count = document.createElement("span");
+    count.className = "type-count";
+    count.textContent = ofType.length;
+    summary.append(h2, count);
+    typeBlock.append(summary);
 
     for (const section of uniqueSorted(ofType.map((r) => r.section))) {
       const h3 = document.createElement("h3");
@@ -190,11 +250,13 @@ function renderEntry(r) {
   meta.className = "meta";
   meta.append(chip(state.typeLabel[r.type] || r.type, () => {
     els.type.value = r.type;
+    openType(r.type);
     refreshSectionFilter("");
     render();
   }));
   meta.append(chip(r.section, () => {
     els.type.value = r.type;
+    openType(r.type);
     refreshSectionFilter(r.section);
     render();
   }));
