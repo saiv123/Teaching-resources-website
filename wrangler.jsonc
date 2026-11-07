@@ -20,7 +20,7 @@
   ],
   "vars": {
     // Public Turnstile site key (safe to commit).
-    "TURNSTILE_SITE_KEY": "REPLACE_WITH_TURNSTILE_SITE_KEY",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAF4ELW4xtEFmTRxU",
     // Cloudflare Access (Zero Trust) settings for /admin. Safe to commit.
     // Team domain looks like https://<team>.cloudflareaccess.com
     "ACCESS_TEAM_DOMAIN": "REPLACE_WITH_ACCESS_TEAM_DOMAIN",
