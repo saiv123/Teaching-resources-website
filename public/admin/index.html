@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Review Queue · Teaching Resources</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/common.js" defer></script>
+  <script src="/js/admin.js" defer></script>
+</head>
+<body class="admin">
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div>
+        <h1>Review queue</h1>
+        <p class="tagline">Approve, edit, or reject submissions. Nothing goes live until you approve it.</p>
+      </div>
+      <a class="btn" href="/">View site</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="pending" aria-selected="true">Pending <span class="tab-count" id="pending-count"></span></button>
+      <button type="button" role="tab" data-tab="approved" aria-selected="false">Approved</button>
+      <button type="button" role="tab" data-tab="rejected" aria-selected="false">Rejected</button>
+      <button type="button" role="tab" data-tab="entries" aria-selected="false">All entries</button>
+    </nav>
+
+    <p id="admin-status" class="form-status" role="status"></p>
+    <div id="admin-toolbar" class="filter-row" hidden>
+      <input type="search" id="entry-search" class="search" placeholder="Search entries…">
+      <button type="button" class="btn btn-primary" id="add-entry">Add entry</button>
+    </div>
+    <div id="admin-list"></div>
+  </main>
+
+  <!-- Editor template, cloned for each card -->
+  <template id="editor-template">
+    <div class="editor">
+      <div class="two-col">
+        <label>Type <select name="type"></select></label>
+        <label>Section <select name="sectionSelect"></select></label>
+      </div>
+      <label hidden>New section name <input name="sectionOther" maxlength="120"></label>
+      <label>Title <input name="title" maxlength="300"></label>
+      <label>Link <input name="url" type="url" maxlength="500"></label>
+      <label>Description <textarea name="description" rows="3" maxlength="2000"></textarea></label>
+      <label>APA 7 citation <textarea name="citation" rows="3" maxlength="1500"></textarea></label>
+      <p class="citation citation-preview"></p>
+      <label class="check"><input type="checkbox" name="citation_approximate"> Citation details approximate</label>
+    </div>
+  </template>
+</body>
+</html>

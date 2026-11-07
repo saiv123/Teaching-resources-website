@@ -1,0 +1,18 @@
+# Dependencies and local Cloudflare state (local D1 database lives in .wrangler/)
+node_modules/
+.wrangler/
+
+# Local secrets: never commit. The example file is safe and is kept.
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.env
+.env.*
+
+# Database exports/backups (contain submissions). Migrations are committed.
+backups/
+*.sql
+!migrations/*.sql
+*.sqlite
+*.sqlite3
+*.db

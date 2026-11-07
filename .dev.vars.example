@@ -1,0 +1,9 @@
+# Copy to .dev.vars for local development (`npm run dev`). Never commit .dev.vars.
+# These Turnstile values are Cloudflare's official test keys and always pass.
+TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+IP_HASH_SALT=dev-salt
+# Lets you use /admin on localhost without Cloudflare Access. Local only.
+DEV_ADMIN_BYPASS=true
+# Optional: paste a Discord webhook URL to test notifications locally.
+DISCORD_WEBHOOK_URL=

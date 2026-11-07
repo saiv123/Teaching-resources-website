@@ -1,0 +1,35 @@
+{
+  // One Worker serves the static site from ./public and handles /api/* itself.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "teaching-resources",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "teaching-resources",
+      // From `npx wrangler d1 create teaching-resources`
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
+    }
+  ],
+  "vars": {
+    // Public Turnstile site key (safe to commit).
+    "TURNSTILE_SITE_KEY": "REPLACE_WITH_TURNSTILE_SITE_KEY",
+    // Cloudflare Access (Zero Trust) settings for /admin. Safe to commit.
+    // Team domain looks like https://<team>.cloudflareaccess.com
+    "ACCESS_TEAM_DOMAIN": "REPLACE_WITH_ACCESS_TEAM_DOMAIN",
+    // "Application Audience (AUD) Tag" from the Access application.
+    "ACCESS_AUD": "REPLACE_WITH_ACCESS_AUD"
+  }
+  // Secrets (set with `npx wrangler secret put NAME`, never commit):
+  //   TURNSTILE_SECRET     Turnstile secret key
+  //   DISCORD_WEBHOOK_URL  Discord channel webhook for new-submission alerts
+  //   IP_HASH_SALT         any random string (rate limiting stores only salted hashes)
+  //   ADMIN_API_TOKEN      optional: long random string for script/API access to /api/admin
+}

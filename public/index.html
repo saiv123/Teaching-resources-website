@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teaching Resources</title>
+  <meta name="description" content="A curated, searchable list of free books, websites, videos, and online resources for teachers, each with an APA 7 citation.">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+  <script src="/js/common.js" defer></script>
+  <script src="/js/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div>
+        <h1>Teaching Resources</h1>
+        <p class="tagline">Free books, websites, videos, and online resources for teachers, each with an APA 7 citation.</p>
+      </div>
+      <button type="button" class="btn btn-primary" id="suggest-btn">Suggest a resource</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="filters" aria-label="Search and filter">
+      <label for="search" class="visually-hidden">Search resources</label>
+      <input type="search" id="search" class="search" placeholder="Search titles, citations, descriptions…" autocomplete="off">
+      <div class="filter-row">
+        <label>Type
+          <select id="filter-type"></select>
+        </label>
+        <label>Section
+          <select id="filter-section"></select>
+        </label>
+        <button type="button" class="btn btn-ghost" id="clear-filters">Clear</button>
+      </div>
+      <p id="result-count" class="result-count" aria-live="polite"></p>
+    </section>
+
+    <div id="results"><p class="empty">Loading resources…</p></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Links point to third-party resources owned by their creators. Citations are best-effort APA 7; ones marked "approximate" may be incomplete.</p>
+      <p>
+        Site code © 2026 Sai Krishna Veeravelli, <a href="https://github.com/saiv123/Teaching-resources-website/blob/main/LICENSE">MIT License</a>.
+        Resource entries and annotations licensed under
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Suggest a resource -->
+  <dialog id="suggest-dialog" aria-labelledby="suggest-title">
+    <form id="suggest-form" class="modal-form" novalidate>
+      <h2 id="suggest-title">Suggest a resource</h2>
+      <p class="hint">No account needed. Every suggestion is reviewed before it appears on the site.</p>
+
+      <div class="two-col">
+        <label>Type <span class="req">*</span>
+          <select name="type" required></select>
+        </label>
+        <label>Section <span class="req">*</span>
+          <select name="sectionSelect" required></select>
+        </label>
+      </div>
+      <label hidden>New section name <span class="req">*</span>
+        <input name="sectionOther" maxlength="120">
+      </label>
+      <label>Title <span class="req">*</span>
+        <input name="title" required maxlength="300">
+      </label>
+      <label>Link <span class="muted">(optional for books)</span>
+        <input name="url" type="url" maxlength="500" placeholder="https://">
+      </label>
+      <label>Short description <span class="req">*</span>
+        <textarea name="description" rows="3" required maxlength="2000" placeholder="What is it, and how is it useful for teachers?"></textarea>
+      </label>
+      <label>APA 7 citation <span class="req">*</span>
+        <textarea name="citation" rows="3" required maxlength="1500" placeholder="Author, A. A. (Year). *Title of work*. Publisher. https://..."></textarea>
+      </label>
+      <p class="citation citation-preview" aria-live="polite"></p>
+      <label class="check">
+        <input type="checkbox" name="citation_approximate"> I'm not sure every detail of this citation is exact
+      </label>
+      <label>Note to the reviewer <span class="muted">(optional, not published)</span>
+        <textarea name="note" rows="2" maxlength="1000"></textarea>
+      </label>
+
+      <div class="hp" aria-hidden="true">
+        <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <div class="turnstile-slot"></div>
+      <p class="form-status" role="status"></p>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Send suggestion</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Report an entry -->
+  <dialog id="report-dialog" aria-labelledby="report-title">
+    <form id="report-form" class="modal-form" novalidate>
+      <h2 id="report-title">Report an entry</h2>
+      <p class="hint">Reporting: <strong id="report-entry-name"></strong></p>
+
+      <label>What's the issue? <span class="req">*</span>
+        <select name="reason" required>
+          <option value="">Choose one…</option>
+          <option value="remove">Should not be on this list</option>
+          <option value="move">Wrong type or section</option>
+          <option value="broken-link">Broken or changed link</option>
+          <option value="citation">Citation needs a fix</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+
+      <div class="reason-fields" data-reason="move" hidden>
+        <div class="two-col">
+          <label>Correct type
+            <select name="type"></select>
+          </label>
+          <label>Correct section
+            <select name="sectionSelect"></select>
+          </label>
+        </div>
+        <label hidden>New section name
+          <input name="sectionOther" maxlength="120">
+        </label>
+      </div>
+
+      <div class="reason-fields" data-reason="broken-link" hidden>
+        <label>New link, if you know it
+          <input name="url" type="url" maxlength="500" placeholder="https://">
+        </label>
+      </div>
+
+      <div class="reason-fields" data-reason="citation" hidden>
+        <label>Corrected APA 7 citation
+          <textarea name="citation" rows="3" maxlength="1500"></textarea>
+        </label>
+        <p class="citation citation-preview" aria-live="polite"></p>
+      </div>
+
+      <label>Details <span class="detail-req req" hidden>*</span>
+        <textarea name="details" rows="3" maxlength="2000"></textarea>
+      </label>
+      <label>Note to the reviewer <span class="muted">(optional, not published)</span>
+        <textarea name="note" rows="2" maxlength="1000"></textarea>
+      </label>
+
+      <div class="hp" aria-hidden="true">
+        <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <div class="turnstile-slot"></div>
+      <p class="form-status" role="status"></p>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Send report</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
