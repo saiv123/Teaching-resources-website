@@ -1,6 +1,7 @@
 // Public endpoints: list published resources and accept suggestions/reports.
 import {
   TYPES,
+  DEFAULT_SECTIONS,
   REPORT_REASONS,
   validateResource,
   validType,
@@ -18,7 +19,11 @@ import { notifyDiscord } from "./discord.js";
 const RATE_LIMIT_PER_HOUR = 10;
 
 export function getConfig(env) {
-  return json({ turnstileSiteKey: env.TURNSTILE_SITE_KEY || "", types: TYPES });
+  return json({
+    turnstileSiteKey: env.TURNSTILE_SITE_KEY || "",
+    types: TYPES,
+    defaultSections: DEFAULT_SECTIONS,
+  });
 }
 
 export async function listResources(env) {

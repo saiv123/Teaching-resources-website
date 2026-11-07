@@ -10,6 +10,68 @@ export const TYPES = [
 ];
 const TYPE_IDS = new Set(TYPES.map((t) => t.id));
 
+// Built-in sections offered in the forms for each type, even before any entry
+// uses them. Sections that published entries use are added on top of these.
+export const DEFAULT_SECTIONS = {
+  book: [
+    "Anti-racism, equity, identity & culturally responsive teaching",
+    "Gender & sexuality",
+    "Literacy & the Science of Reading",
+    "ELL / multilingual learners",
+    "Assessment, RTI & MTSS",
+    "Instruction, planning & classroom community",
+    "School law, restorative practice & special education",
+    "Mathematics",
+  ],
+  "childrens-book": [
+    "Identity, race & civil rights",
+    "Immigration, refugees & global stories",
+    "STEM identity & biography",
+    "Disability & neurodiversity",
+    "Native / Indigenous",
+    "Poetry, music & read-aloud favorites",
+    "Other genre exemplars",
+  ],
+  website: [
+    "Anti-racism, equity & diverse books",
+    "Native education & Since Time Immemorial",
+    "Social studies & historical thinking",
+    "Gender, sexuality & LGBTQ+ youth",
+    "Disability",
+    "ELL / multilingual learners",
+    "Literacy & the Science of Reading",
+    "Assessment, RTI & MTSS",
+    "School law, safety & student wellbeing",
+    "General tools",
+  ],
+  article: [
+    "Anti-racism, equity & representation",
+    "Gender & sexuality",
+    "Literacy & the Science of Reading",
+    "Assessment, RTI & MTSS",
+    "ELL / multilingual",
+    "Learning theory, group development & tech/law",
+    "Mathematics",
+    "Social studies methods",
+  ],
+  blog: [
+    "Literacy & phonics",
+    "Diverse-book lists",
+    "ELL service models",
+    "AI, digital citizenship & tech law",
+    "School law",
+    "Anti-racist practice",
+  ],
+  media: [
+    "Anti-racism, gender & identity",
+    "Disability",
+    "Trauma-informed teaching",
+    "Literacy & the Science of Reading",
+    "Native education & Since Time Immemorial",
+    "Mathematics",
+  ],
+};
+
 export const REPORT_REASONS = {
   remove: "Should not be on this list",
   move: "Wrong type or section",

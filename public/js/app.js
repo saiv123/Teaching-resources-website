@@ -38,6 +38,7 @@ async function init() {
     ]);
     state.siteKey = config.turnstileSiteKey || "";
     state.types = config.types || [];
+    state.defaultSections = config.defaultSections || {};
     state.typeLabel = Object.fromEntries(state.types.map((t) => [t.id, t.label]));
     state.resources = resources;
   } catch (err) {
@@ -249,7 +250,7 @@ function wireSuggestForm() {
   const f = form.elements;
   fillTypeSelect(f.type, state.types, "Choose a type…");
   const refreshSections = () =>
-    fillSectionSelect(f.sectionSelect, sectionsFor(state.resources, f.type.value), {
+    fillSectionSelect(f.sectionSelect, sectionsFor(state.resources, f.type.value, state.defaultSections), {
       placeholder: f.type.value ? "Choose a section…" : "Choose a type first",
       otherInput: f.sectionOther,
     });
@@ -301,7 +302,7 @@ function wireReportForm() {
   const f = form.elements;
   fillTypeSelect(f.type, state.types);
   const refreshSections = (current) =>
-    fillSectionSelect(f.sectionSelect, sectionsFor(state.resources, f.type.value), {
+    fillSectionSelect(f.sectionSelect, sectionsFor(state.resources, f.type.value, state.defaultSections), {
       placeholder: "Choose a section…",
       otherInput: f.sectionOther,
       current,

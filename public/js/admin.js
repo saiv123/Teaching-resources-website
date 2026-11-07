@@ -27,6 +27,7 @@ async function init() {
   try {
     const config = await fetch("/api/config").then((r) => r.json());
     admin.types = config.types;
+    admin.defaultSections = config.defaultSections || {};
     admin.typeLabel = Object.fromEntries(admin.types.map((t) => [t.id, t.label]));
     await loadResources();
   } catch (err) {
@@ -311,7 +312,7 @@ function buildEditor(values) {
   type.value = values.type || admin.types[0].id;
 
   const refreshSections = (current) =>
-    fillSectionSelect(sectionSelect, sectionsFor(admin.resources, type.value), {
+    fillSectionSelect(sectionSelect, sectionsFor(admin.resources, type.value, admin.defaultSections), {
       placeholder: "Choose a section…",
       otherInput: sectionOther,
       current,

@@ -27,8 +27,11 @@ function uniqueSorted(values) {
   );
 }
 
-function sectionsFor(resources, type) {
-  return uniqueSorted(resources.filter((r) => !type || r.type === type).map((r) => r.section));
+// Sections used by entries of this type, plus (for forms) the built-in defaults.
+function sectionsFor(resources, type, defaults) {
+  const used = resources.filter((r) => !type || r.type === type).map((r) => r.section);
+  const builtIn = defaults ? (type ? defaults[type] || [] : Object.values(defaults).flat()) : [];
+  return uniqueSorted([...builtIn, ...used]);
 }
 
 function fillTypeSelect(select, types, placeholder) {
